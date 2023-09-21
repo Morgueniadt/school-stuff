@@ -1,0 +1,20 @@
+#bubble sort code
+# book page 216
+
+#myList = [9,4,1,8,6]
+# myList = [3,2,7,5,1]
+myList = [5,7,3,6,2
+        ]
+
+for outerIndex in range(len(myList) - 1):
+    print(myList)
+    for index in range(len(myList) -1):
+        if myList[index] > myList[index + 1]:
+            tempValue = myList[index]
+            myList[index] = myList[index + 1]
+            myList[index + 1] = tempValue
+        print("Iteration", index , "is", myList)
+        
+print(myList)
+        
+                

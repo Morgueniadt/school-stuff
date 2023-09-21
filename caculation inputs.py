@@ -1,0 +1,8 @@
+iCost= float(input("enter the intialcost of them in euro:"))
+vatRate = float(float(input("enter the VAT rate as a percnetage:")))
+finalCost = (iCost*(100+vatRate)/100)
+totalVat = finalCost-iCost
+print("the final in euro after VAT is",finalCost)
+print("the total VAT amount in euro is", totalVat)
+totalVat = round(totalVat, 2)
+print(totalVat)

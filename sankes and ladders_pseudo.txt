@@ -1,0 +1,1015 @@
+IMPORT random
+
+IMPORT time
+
+IMPORT sys
+
+IMPORT csv
+
+
+
+   
+
+   
+
+DEFINE FUNCTION introMsgPvP():
+
+    SET msg TO """
+
+     Welcome to Snake and Ladder Game.
+
+     
+
+         Rules:
+
+       1. Initally both the players are at starting position i.e. 0. 
+
+          Take it IN turns to roll the dice. 
+
+          Move forward the number of spaces shown on the dice.
+
+       2. If you lands at the bottom of a ladder, you can move up to the top of the ladder.
+
+       3. If you lands on the head of a snake, you must slide down to the bottom of the snake.
+
+       4. The first player to get to the FINAL position is the winner.
+
+       5. Hit enter to roll the dice.
+
+     
+
+     """
+
+    OUTPUT(msg)
+
+    
+
+DEFINE FUNCTION time_convert(sec):
+
+  SET mins TO sec // 60
+
+  SET sec TO sec % 60
+
+  SET hours TO mins // 60
+
+  SET mins TO mins % 60
+
+  SET OUTPUT("Time Lapsed TO {0}:{1}:{2}".format(int(hours),int(mins),round(sec)))
+
+
+
+
+
+
+
+
+
+#initialising variables
+
+SET finishGame TO 100
+
+SET timeOut TO 1
+
+SET introMessage TO 5
+
+SET player1Place TO 0
+
+SET player2Place TO 0
+
+SET # oldPos TO 
+
+SET # currentPos TO 
+
+SET playerName TO " "
+
+pl1=""
+
+pl2=""
+
+
+
+SET firstName TO INPUT("Please Enter your First Name:")
+
+SET lastName TO INPUT("Please Enter your Last Name:")
+
+SET age TO int(INPUT("Please enter age:"))
+
+
+
+SET studentInfo TO [firstName,lastName, age]
+
+
+
+SET with open("information.csv", "a", newline TO "") as file:
+
+    SET writer TO csv.writer(file)
+
+    writer.writerow(studentInfo)
+
+
+
+SET simple_or_long TO int(INPUT("please select \n(1)simple\n(2)long\nenter your number choice:"))
+
+IF simple_or_long EQUALS 1:
+
+    SET snakes TO {
+
+    26: 10,
+
+    54: 36,
+
+    60: 23,
+
+    83: 45,
+
+    85: 59,
+
+    90: 48,
+
+    97: 87,
+
+}
+
+    SET ladders TO {
+
+    3: 20,
+
+    11: 28,
+
+    15: 34,
+
+    17: 74,
+
+    22: 37,
+
+    38: 59,
+
+    49: 67,
+
+    57: 76,
+
+    73: 86,
+
+}
+
+
+
+ELSEIF simple_or_long EQUALS 2:
+
+    SET snakes TO {
+
+    8: 4,
+
+    18: 1,
+
+    26: 10,
+
+    39: 5,
+
+    51: 6,
+
+    54: 36,
+
+    56: 1,
+
+    60: 23,
+
+    75: 28,
+
+    83: 45,
+
+    85: 59,
+
+    90: 48,
+
+    92: 25,
+
+    97: 87,
+
+    99: 63
+
+}
+
+    SET ladders TO {
+
+    3: 20,
+
+    6: 14,
+
+    11: 28,
+
+    15: 34,
+
+    17: 74,
+
+    22: 37,
+
+    38: 59,
+
+    49: 67,
+
+    57: 76,
+
+    61: 78,
+
+    73: 86,
+
+    81: 98,
+
+    88: 91
+
+}
+
+
+
+
+
+ #------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+
+
+DEFINE FUNCTION pvpName(): # called second
+
+    SET playervs1Name TO None
+
+    WHILE not playervs1Name:
+
+         SET playervs1Name TO INPUT("please INPUT player one name :").strip()
+
+
+
+         SET playervs2Name TO None
+
+         WHILE not playervs2Name:
+
+             SET playervs2Name TO INPUT("please INPUT player two name :").strip()
+
+
+
+    OUTPUT("\nThis match will be played by Player 1", playervs1Name , " and Player 2", playervs2Name)
+
+    RETURN playervs1Name, playervs2Name
+
+
+
+
+
+DEFINE FUNCTION diceRoll(): # called third
+
+    time.sleep(timeOut)
+
+    SET diceValue TO random.randint(1, 6)
+
+#     OUTPUT(diceValue)
+
+#     OUTPUT(type(diceValue))
+
+    OUTPUT("Its a " + str(diceValue))
+
+    RETURN diceValue
+
+    
+
+
+
+DEFINE FUNCTION snakeBite(oldPos, currentPos, playerName):
+
+    (snakeBite)
+
+    OUTPUT("\n", playerName ," got bit by a snake and moved down from", str(oldPos)  ," to ", str(currentPos))
+
+    
+
+DEFINE FUNCTION ladderClimbed(oldPos, currentPos, playerName):
+
+    (ladderClimbed)
+
+    OUTPUT("\n", playerName ," found a ladder and climbed from", str(oldPos)  ," to ", str(currentPos))
+
+    
+
+DEFINE FUNCTION s_n_l(playerName,currentPos, diceValue): #fix
+
+    time.sleep(timeOut)
+
+    SET oldPos TO currentPos
+
+    SET #pvp1Position TO oldPos
+
+    SET #pvp2Position TO oldPos
+
+    SET currentPos TO oldPos + diceValue #fix DEFINE FUNCTION
+
+    #OUTPUT(type(currentPos))
+
+    #OUTPUT(currentPos)
+
+
+
+    IF currentPos > finishGame:#
+
+        need= finishGame - oldPos
+
+        OUTPUT(f"You need {need} to win this game. Keep trying.")
+
+        RETURN oldPos
+
+      
+
+        
+
+    OUTPUT(f"\n {playerName} moved to {currentPos} from {oldPos}")
+
+    IF currentPos IN snakes:
+
+        SET FinalValue TO snakes.get(currentPos)
+
+        snakeBite(currentPos, FinalValue, playerName)
+
+    
+
+    ELSEIF currentPos IN ladders:
+
+      SET FinalValue TO ladders.get(currentPos)
+
+      ladderClimbed(currentPos, FinalValue, playerName)
+
+     
+
+    ELSE:
+
+        SET FinalValue TO currentPos
+
+        
+
+    RETURN currentPos
+
+
+
+
+
+SET # playerName TO playerName()
+
+SET #diceValue TO diceRoll() # we have the right dice number here that was rolled
+
+
+
+
+
+SET #currentPos TO s_n_l(oldPos, currentPos, playerName, diceValue)
+
+# OUTPUT(currentPos)
+
+# OUTPUT(type(currentPos))
+
+SET #currentPosntValue TO int(currentPos)
+
+SET # currentPos TO s_n_l
+
+SET # currentPosntValue TO int(currentPos)
+
+
+
+DEFINE FUNCTION checkWin(playerName, position):
+
+    time.sleep(timeOut)
+
+    IF finishGame EQUALS position:
+
+        OUTPUT("\n\n\nThats it.\n\n" + playerName + " won the game.")
+
+        OUTPUT("Congratulations " + playerName)
+
+        SET end_time TO time.time()
+
+        SET time_lapsed TO end_time - stopwatch
+
+        time_convert(time_lapsed)
+
+
+
+        SET snakesNLadders TO [gameChoice,position,checkWin ,time_convert]
+
+
+
+        SET with open("information.csv", "a", newline TO "") as file:
+
+            SET writer TO csv.writer(file)
+
+            writer.writerow(snakesNLadders)
+
+                 
+
+            sys.exit(1)
+
+
+
+# #def playAgain():
+
+#     IF finalGame ==postion:
+
+SET #         restart TO INPUT("would you like to platy again:")
+
+#         IF restart EQUALS "yes" or restart EQUALS "Yes":
+
+#             start()
+
+#         ELSEIF restart EQUALS "no" or restart EQUALS "No":
+
+#             sys.exit(1)
+
+        
+
+DEFINE FUNCTION startPvP():
+
+    introMsgPvP()
+
+    time.sleep(introMessage)
+
+    
+
+    
+
+    
+
+    SET playervs1Name, playervs2Name TO pvpName()
+
+    SET #players TO playerName()
+
+    #OUTPUT(type(players))
+
+    
+
+SET #     playervs1Name TO players[0] 
+
+SET #     playervs2Name TO players[1]
+
+    
+
+    #OUTPUT("P1", playervs1Name)
+
+    time.sleep(timeOut)
+
+        
+
+    SET pvp1Position TO 0
+
+    SET pvp2Position TO 0
+
+
+
+    WHILE True:
+
+        time.sleep(timeOut)
+
+        OUTPUT(playervs1Name, end= "")
+
+        SET INPUT_1 TO INPUT("Hit the enter to roll dice: ")
+
+        OUTPUT("\nRolling dice...")
+
+        SET diceValue TO diceRoll()
+
+        time.sleep(timeOut)
+
+        OUTPUT(playervs1Name ," moving....")
+
+       # here what happens
+
+        SET pvp1Position TO s_n_l(playervs1Name, pvp1Position, diceValue)
+
+       # do i ever get here
+
+        checkWin(playervs1Name, pvp1Position)
+
+
+
+        OUTPUT(playervs2Name, end= "")
+
+        SET INPUT_2 TO INPUT("Hit the enter to roll dice: ")
+
+        OUTPUT("\nRolling dice...")
+
+        SET diceValue TO diceRoll()
+
+        time.sleep(timeOut)
+
+        OUTPUT(playervs2Name ," moving....")
+
+        SET pvp2Position TO s_n_l(playervs2Name, pvp2Position, diceValue)
+
+        checkWin(playervs2Name, pvp2Position)
+
+
+
+ #------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+DEFINE FUNCTION introMsgAivAi():
+
+    SET msg TO """
+
+     Welcome to Snake and Ladder Game.
+
+     
+
+         Rules:
+
+       1. Initally both the Ai's are at starting position i.e. 0. 
+
+          They will take turns to roll the dice. 
+
+          Move forward the number of spaces shown on the dice.
+
+       2. If one lands at the bottom of a ladder, one can move up to the top of the ladder.
+
+       3. If on lands on the head of a snake, one must slide down to the bottom of the snake.
+
+       4. The first computer to get to the FINAL position is the winner.
+
+    
+
+     
+
+     """
+
+    OUTPUT(msg)
+
+    
+
+DEFINE FUNCTION computerName():
+
+    OUTPUT("Ai.1 is ready")
+
+    OUTPUT("Ai.2 is ready")
+
+    SET Comp1name TO "Ai.1"
+
+    SET Comp2name TO "Ai.2"
+
+
+
+    OUTPUT("\nThis match will be played by Player 1", Comp1name , " and Player 2", Comp2name)
+
+    RETURN Comp1name, Comp2name
+
+
+
+
+
+DEFINE FUNCTION diceRoll(): 
+
+    time.sleep(timeOut)
+
+    SET diceValue TO random.randint(1, 6)
+
+    OUTPUT("Its a " + str(diceValue))
+
+    RETURN diceValue
+
+    
+
+
+
+DEFINE FUNCTION snakeBite(oldPos, currentPos, computerName):
+
+    (snakeBite)
+
+    OUTPUT("\n", computerName ," got bit by a snake and moved down from", str(oldPos)  ," to ", str(currentPos))
+
+    
+
+DEFINE FUNCTION ladderClimbed(oldPos, currentPos, computerName):
+
+    (ladderClimbed)
+
+    OUTPUT("\n", computerName ," found a ladder and climbed from", str(oldPos)  ," to ", str(currentPos))
+
+    
+
+DEFINE FUNCTION s_n_l(computerName,currentPos, diceValue): 
+
+    time.sleep(timeOut)
+
+    SET oldPos TO currentPos
+
+    SET currentPos TO oldPos + diceValue 
+
+
+
+    IF currentPos > finishGame:
+
+        SET need TO finishGame - oldPos
+
+        OUTPUT(f"You need {need} to win this game. Keep trying.")
+
+        RETURN oldPos
+
+      
+
+        
+
+    OUTPUT(f"\n {computerName} moved to {currentPos} from {oldPos}")
+
+    IF currentPos IN snakes:
+
+        SET FinalValue TO snakes.get(currentPos)
+
+        snakeBite(currentPos, FinalValue, computerName)
+
+    
+
+    ELSEIF currentPos IN ladders:
+
+      SET FinalValue TO ladders.get(currentPos)
+
+      ladderClimbed(currentPos, FinalValue, computerName)
+
+     
+
+    ELSE:
+
+        SET FinalValue TO currentPos
+
+        
+
+    RETURN currentPos
+
+
+
+
+
+
+
+DEFINE FUNCTION checkWin(computerName, position):
+
+    time.sleep(timeOut)
+
+    IF finishGame EQUALS position:
+
+        OUTPUT("\n\n\nThats it.\n\n" + computerName + " won the game.")
+
+        OUTPUT("Congratulations " + computerName)
+
+        SET end_time TO time.time()
+
+        SET time_lapsed TO end_time - stopwatch
+
+        time_convert(time_lapsed)
+
+
+
+        SET snakesNLadders TO [gameChoice,position,checkWin ,time_convert]
+
+
+
+        SET with open("information.csv", "a", newline TO "") as file:
+
+            SET writer TO csv.writer(file)
+
+            writer.writerow(snakesNLadders)
+
+                
+
+            sys.exit(1)
+
+
+
+DEFINE FUNCTION startComputer():
+
+    introMsgAivAi()
+
+    time.sleep(introMessage)
+
+    
+
+    SET Comp1name, Comp2name TO computerName()
+
+
+
+    time.sleep(timeOut)
+
+        
+
+    SET Comp1Position TO 0
+
+    SET Comp2Position TO 0
+
+
+
+    WHILE True:
+
+        time.sleep(timeOut)
+
+        OUTPUT("\nRolling dice...")
+
+        SET diceValue TO diceRoll()
+
+        time.sleep(timeOut)
+
+        OUTPUT(Comp1name ," moving....")
+
+        SET Comp1Position TO s_n_l(Comp1name, Comp1Position, diceValue)
+
+        checkWin(Comp1name, Comp1Position)
+
+
+
+        OUTPUT("\nRolling dice...")
+
+        SET diceValue TO diceRoll()
+
+        time.sleep(timeOut)
+
+        OUTPUT(Comp2name ," moving....")
+
+        SET Comp2Position TO s_n_l(Comp2name, Comp2Position, diceValue)
+
+        checkWin(Comp2name, Comp2Position)
+
+        
+
+#------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+DEFINE FUNCTION introMsgPvAi():
+
+    SET msg TO """
+
+     Welcome to Snake and Ladder Game.
+
+     
+
+         Rules:
+
+       1. Both player and Ai are at the starting position i.e 0
+
+          Take it IN turns to roll the dice. 
+
+          Move forward the number of spaces shown on the dice.
+
+       2. If you lands at the bottom of a ladder, you can move up to the top of the ladder.
+
+       3. If you lands on the head of a snake, you must slide down to the bottom of the snake.
+
+       4. The first player to get to the FINAL position is the winner.
+
+       5. Hit enter to roll the dice.
+
+     
+
+
+
+     
+
+     """
+
+    OUTPUT(msg)
+
+DEFINE FUNCTION PvAiName():
+
+   SET PvAiname1 TO None
+
+   WHILE not PvAiname1:
+
+         SET PvAiname1 TO INPUT("please INPUT player one name :")
+
+         
+
+         OUTPUT("Ai is ready")
+
+
+
+         SET PvAiName2 TO "Ai"
+
+
+
+         OUTPUT("\nThis match will be played by Player 1", PvAiname1 , " and Player 2", PvAiName2)
+
+         RETURN PvAiname1, PvAiName2
+
+
+
+
+
+DEFINE FUNCTION diceRoll(): 
+
+    time.sleep(timeOut)
+
+    SET diceValue TO random.randint(1, 6)
+
+    OUTPUT("Its a " + str(diceValue))
+
+    RETURN diceValue
+
+    
+
+
+
+DEFINE FUNCTION snakeBite(oldPos, currentPos, PvAiName):
+
+    (snakeBite)
+
+    OUTPUT("\n", PvAiName ," got bit by a snake and moved down from", str(oldPos)  ," to ", str(currentPos))
+
+    
+
+DEFINE FUNCTION ladderClimbed(oldPos, currentPos, PvAiName):
+
+    (ladderClimbed)
+
+    OUTPUT("\n", PvAiName ," found a ladder and climbed from", str(oldPos)  ," to ", str(currentPos))
+
+    
+
+DEFINE FUNCTION s_n_l(PvAiName,currentPos, diceValue): 
+
+    time.sleep(timeOut)
+
+    SET oldPos TO currentPos
+
+    SET currentPos TO oldPos + diceValue 
+
+
+
+    IF currentPos > finishGame:
+
+        need= finishGame - oldPos
+
+        OUTPUT(f"You need {need} to win this game. Keep trying.")
+
+        RETURN oldPos
+
+      
+
+        
+
+    OUTPUT(f"\n {PvAiName} moved to {currentPos} from {oldPos}")
+
+    IF currentPos IN snakes:
+
+        SET FinalValue TO snakes.get(currentPos)
+
+        snakeBite(currentPos, FinalValue, PvAiName)
+
+    
+
+    ELSEIF currentPos IN ladders:
+
+      SET FinalValue TO ladders.get(currentPos)
+
+      ladderClimbed(currentPos, FinalValue, PvAiName)
+
+     
+
+    ELSE:
+
+        SET FinalValue TO currentPos
+
+        
+
+    RETURN currentPos
+
+
+
+
+
+
+
+DEFINE FUNCTION checkWin(PvAiName, position):
+
+    time.sleep(timeOut)
+
+    IF finishGame EQUALS position:
+
+        OUTPUT("\n\n\nThats it.\n\n" + PvAiName + " won the game.")
+
+        OUTPUT("Congratulations " + PvAiName)
+
+        SET end_time TO time.time()
+
+        SET time_lapsed TO end_time - stopwatch
+
+        time_convert(time_lapsed)
+
+        
+
+
+
+        SET snakesNLadders TO [gameChoice,position,checkWin ,time_convert]
+
+
+
+        SET with open("information.csv", "a", newline TO "") as file:
+
+            SET writer TO csv.writer(file)
+
+            writer.writerow(snakesNLadders)
+
+                
+
+            sys.exit(1)
+
+
+
+DEFINE FUNCTION startPvAi():
+
+    introMsgPvAi()
+
+    time.sleep(introMessage)
+
+    
+
+    
+
+    SET PvAiname1, PvAiName2 TO PvAiName()
+
+
+
+    time.sleep(timeOut)
+
+        
+
+    SET PvAi1Position TO 0
+
+    SET PvAi2Position TO 0
+
+
+
+    WHILE True:
+
+        time.sleep(timeOut)
+
+        OUTPUT(PvAiname1, end= "")
+
+        SET INPUT_1 TO INPUT("Hit the enter to roll dice: ") 
+
+        OUTPUT("\nRolling dice...")
+
+        SET diceValue TO diceRoll()
+
+        time.sleep(timeOut)
+
+        OUTPUT(PvAiname1 ," moving....")
+
+        SET PvAi1Position TO s_n_l(PvAiname1, PvAi1Position, diceValue)
+
+        checkWin(PvAiname1, PvAi1Position)
+
+
+
+        OUTPUT(PvAiName2, end= "")
+
+        OUTPUT("\nRolling dice...")
+
+        SET diceValue TO diceRoll()
+
+        time.sleep(timeOut)
+
+        OUTPUT(PvAiName2 ," moving....")
+
+        SET PvAi2Position TO s_n_l(PvAiName2, PvAi2Position, diceValue)
+
+        checkWin(PvAiName2, PvAi2Position)
+
+
+
+#------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+SET gameChoice TO 1 #initialise the variable FOR WHILE loop enetr
+
+
+
+
+
+WHILE gameChoice >=1 or gameChoice <=3:
+
+   
+
+    SET gameChoice TO int(INPUT("Would you like to play (1)Plaver versus Player or (2)watch the Ai or (3)play against the Ai ? :\n Please enter 1,2 or 3:"))
+
+    SET stopwatch TO time.time()
+
+    
+
+    #"play PvP"
+
+    IF gameChoice EQUALS 1:
+
+        startPvP()
+
+    #"watch the Ai"
+
+    ELSEIF gameChoice EQUALS 2:
+
+        startComputer()
+
+    #Ai V Comp
+
+    ELSEIF gameChoice EQUALS 3:
+
+        startPvAi()
+
+
+
+
+
+

@@ -1,86 +1,51 @@
- myList = [1,19,27,8,5,9]
+ counter = 1
  
- print(myList)
+ while counter <= 10:
+     print("hello world")
+     counter +=1
+     
+     print("goodbye")
+     
+     counter = 1
+ counter = 0
  
- for i in myList:
-     print(i)
-
- myList = [1,19,27,8,5,9]
+ while counter <10:
+     print(counter)
+     counter +=1
+     
+     print("loop finished..")
+     
+ counter = 1
  
- print(myList)
- 
- myList.append(11)
- myList.append(13)
- myList.append(15)
- myList.append(17)
- myList.append(19)
-
- print(myList)
-
- myList = [1,19,27,8,5,9]
- 
- print(myList)
- 
- myList.insert(1, 13)
- 
- print(myList)
-
- myList = [1,19,27,8,5,9]
- 
- myList.remove(myList[0])
- 
- print(myList)
-
- myList = [1,19,27,8,5,9]
- 
- location = myList.index(27)
- print(location)
- 
- print(myList.index(27))
-
- myList = [1,19,27,8,5,9]
- 
- print(myList.index(27))
- 
- myList.remove(myList[location])
- 
- print(myList)
- 
- 
-
- myCars = ["Ford","Toyota","Honda","BMW"]
- 
- carIWantToAdd = input(("Enter the brand of car you want to add "))
- 
- myCars.append(carIWantToAdd )
- print(myCars)
- carIWantToSeacrh = input("enter the make of car")
+ while counter <11:
+     print(counter)
+     counter +=1
+     
 
 
+ grade = int(input("what grade did you get"))
 
- if carIWantToSeacrh in myCars:
-     print("yes we sell that car")
- else:
-     print("we do not have that car")
+grade = int(input("grade please 1 - 100"))
 
-
-
-
- carYears = []
- 
- yearsWeHave = input("Tell me a year of car we sell")
- carYears.append(yearsWeHave)
- 
- print(carYears)
-
-
-
-carYears = []
-
-for i in range(3):
-    yearsWeHave = input("tell me a year of car we sell")
-    carYears.append(yearsWeHave)
+while grade < 0 or grade> 100:
+    grade = int(input("grade please use a number between 1 - 100"))
     
-print(carYears)
+print(grade)
+if grade >=90 and grade <101:
+    print("H1")
+elif grade >80 and grade <=89:
+    print("H2")
+elif grade >70 and grade <=79:
+    print("H3")
+elif grade >60 and grade <=69:
+    print("H4")
+elif grade >50 and grade <=59:
+    print("H5")
+elif grade >40 and grade <=49:
+    print("H6")
+elif grade >30 and grade <=39:
+    print("H7")
+elif grade >0 and grade <=29:
+    print("H8")
 
-print(carYears)
+
